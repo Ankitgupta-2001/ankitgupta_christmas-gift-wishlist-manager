@@ -1,0 +1,130 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Group</title>
+    <style>
+        /* General Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        /* Body Styling */
+        body {
+            background: url("{% static 'image/im.jpg' %}") no-repeat center center fixed;
+            background-size: cover;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            padding: 20px;
+        }
+
+        /* Heading Styling */
+        h1 {
+            font-size: 2.5rem;
+            color: #fff;
+            margin-bottom: 1px;
+            font-weight: 50;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); /* Shadow for readability */
+        }
+
+        /* Form Container */
+        form {
+            background-color: rgba(255, 255, 255, 0.9); /* Transparent white background */
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 450px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        /* Form Fields */
+        form p {
+            font-size: 1rem;
+            margin-bottom: 10px;
+            color: #555;
+        }
+
+        /* Input Fields and Labels */
+        input, select, textarea {
+            width: 60%;
+            padding: 12px;
+            font-size: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            outline: none;
+            background-color: #fafafa;
+            transition: border-color 0.3s ease-in-out, background-color 0.3s ease;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            border-color: #FF0000;
+            background-color: #fff;
+        }
+
+        /* Textarea Styling */
+        textarea {
+            resize: vertical;
+            min-height: 200px;
+        }
+
+        /* Submit Button Styling */
+        button {
+            padding: 12px 20px;
+            font-size: 1rem;
+            font-weight: bold;
+            color: #fff;
+            background-color: #FF0000;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s;
+        }
+
+        button:hover {
+            background-color: #FF0000;
+            transform: translateY(-2px);
+        }
+
+        button:active {
+            background-color: #FF0000;
+            transform: translateY(1px);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 500px) {
+            form {
+                padding: 20px;
+                width: 50%;
+                max-width: 60%;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Create a New Group</h1>
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}  <!-- This will render the form fields -->
+        <button type="submit">Create Group</button>
+    </form>
+</body>
+</html>

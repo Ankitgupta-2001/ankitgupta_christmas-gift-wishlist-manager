@@ -1,0 +1,82 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wishlist Manager</title>
+    <style>
+        /* General Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Body and Background */
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url("{% static 'image/img5.jpg' %}");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            color: white; /* Set default text color to white */
+            line-height: 1.6;
+            padding: 20px;
+            height: 100vh;
+            background-attachment: fixed;
+        }
+
+        /* Header Styles */
+        h1 {
+            font-size: 2.5rem;
+            color: white; /* Ensure the header text is white */
+            margin-bottom: 20px;
+        }
+
+        /* Paragraph Styles */
+        p {
+            font-size: 1.2rem;
+            color: white; /* Set paragraph text to white */
+            margin-bottom: 40px;
+        }
+
+        /* Links Styles */
+        a {
+            text-decoration: none;
+            color: white; /* Set link text to white */
+            font-weight: bold;
+            margin: 0 15px;
+            transition: color 0.3s ease;
+        }
+
+        a:hover {
+            color: #ddd; /* Light gray color on hover for better contrast */
+        }
+
+        /* Container for layout */
+        .container {
+            padding: 30px; /* Add padding around the content */
+            margin-left: 20px; /* Align container to the left */
+            background-color: transparent; /* Remove white background */
+        }
+
+        /* Links Section */
+        .links-container {
+            display: flex;
+            justify-content: flex-start; /* Align links to the left */
+            margin-top: 40px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome to Wishlist Manager</h1>
+        <p>Create or join wishlist groups, manage gifts, and more!</p>
+
+        <div class="links-container">
+            <a href="{% url 'signup' %}">Sign Up</a> | <a href="{% url 'signin' %}">Sign In</a>
+        </div>
+    </div>
+</body>
+</html>

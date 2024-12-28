@@ -1,0 +1,158 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Launch Wishlist</title>
+    <style>
+        /* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+/* Body Styling */
+body {
+    background-color: #f9f9f9;
+    color: #333;
+    font-size: 1rem;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+}
+
+/* Heading */
+h1 {
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+/* Error Message */
+p[style*="color: red"] {
+    color: #FF0000;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+/* Form Styling */
+form {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 600px;
+}
+
+/* List Items for Gifts */
+ul {
+    list-style-type: none;
+    padding: 0;
+    margin-bottom: 20px;
+}
+
+li {
+    margin-bottom: 15px;
+}
+
+/* Radio Button and Label */
+input[type="radio"] {
+    margin-right: 10px;
+}
+
+label {
+    font-size: 1.1rem;
+    color: #555;
+}
+
+/* Submit Button */
+button[type="submit"] {
+    background-color: #FF0000;
+    color: white;
+    font-size: 1.1rem;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+    max-width: 200px;
+    margin: 10px 0;
+    transition: background-color 0.3s ease;
+}
+
+button[type="submit"]:hover {
+    background-color: #FF0000;
+}
+
+/* Back Link */
+a {
+    color: #FF0000;
+    font-size: 1.1rem;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    h1 {
+        font-size: 1.8rem;
+    }
+
+    label {
+        font-size: 1rem;
+    }
+
+    button[type="submit"] {
+        font-size: 1rem;
+        padding: 8px 12px;
+    }
+}
+
+    </style>
+</head>
+<body>
+    <h1>Wishlist for {{ group.title }}</h1>
+
+    {% if error %}
+        <p style="color: red;">{{ error }}</p>
+    {% endif %}
+
+    {% if items %}
+        {% if selected_item %}
+            <!-- Display the selected gift details -->
+            <h2>Selected Gift</h2>
+            <p><strong>Name:</strong> {{ selected_item.name }}</p>
+            <p><strong>Price:</strong> ${{ selected_item.price }}</p>
+            <p><strong>Description:</strong> {{ selected_item.description }}</p>
+        {% else %}
+            <!-- Display a numbered list of gifts -->
+            <form method="POST" action="{% url 'select_gift' group.id %}">
+                {% csrf_token %}
+                <ul>
+                    {% for item in items %}
+                        <li>
+                            <input type="radio" name="selected_item" value="{{ item.id }}" id="item-{{ item.id }}">
+                            <label for="item-{{ item.id }}">Gift {{ forloop.counter }}</label>
+                        </li>
+                    {% endfor %}
+                </ul>
+                <button type="submit">Select Gift</button>
+            </form>
+        {% endif %}
+    {% else %}
+        <p>No available gifts to select.</p>
+    {% endif %}
+
+    <a href="{% url 'group_details' group.id %}">Back to Group Details</a>
+</body>
+</html>

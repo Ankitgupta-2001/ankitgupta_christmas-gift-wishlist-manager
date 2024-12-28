@@ -1,0 +1,178 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Profile</title>
+    <style>
+        /* General Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+        
+        /* Body Styling with Background Image */
+        body {
+            background-image: url("{% static 'image/pkk.webp' %}"); /* Update this with your background image path */
+            background-size: cover; /* Ensure the image covers the entire page */
+            background-position: center; /* Center the image */
+            background-attachment: fixed; /* Keep the background fixed while scrolling */
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        /* Page Title */
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: #444;
+            text-align: center;
+        }
+        
+        /* Form Styling */
+        form {
+            background-color: rgba(255, 255, 255, 0.9); /* Semi-transparent white background */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 500px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        /* Form Groups */
+        form div {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        /* Labels */
+        label {
+            font-size: 1rem;
+            color: #555;
+            font-weight: bold;
+        }
+        
+        /* Input Fields */
+        input[type="text"],
+        input[type="date"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 10px;
+            font-size: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+        
+        input[type="text"]:focus,
+        input[type="date"]:focus,
+        textarea:focus,
+        select:focus {
+            border-color: green;
+        }
+        
+        /* Profile Picture */
+        img {
+            display: block;
+            max-height: 100px;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+        
+        /* File Input */
+        input[type="file"] {
+            padding: 5px;
+        }
+        
+        /* Textarea */
+        textarea {
+            resize: vertical;
+        }
+        
+        /* Submit Button */
+        button {
+            padding: 12px 20px;
+            font-size: 1rem;
+            font-weight: bold;
+            color: #fff;
+            background-color: #FF0000;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+        
+        button:hover {
+            background-color: #FF0000;
+        }
+        
+        button:active {
+            transform: scale(0.98);
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            form {
+                padding: 15px;
+            }
+        
+            label {
+                font-size: 0.9rem;
+            }
+        
+            button {
+                padding: 10px 15px;
+            }
+        }
+        
+    </style>
+</head>
+<body>
+    <h1>Edit Profile</h1>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div>
+            <label for="full_name">Full Name:</label>
+            <input type="text" id="full_name" name="full_name" value="{{ user_profile.full_name }}" required>
+        </div>
+        <div>
+            <label for="dob">Date of Birth:</label>
+            <input type="date" id="dob" name="dob" value="{{ user_profile.dob|date:'Y-m-d' }}">
+        </div>
+        <div>
+            <label for="gender">Gender:</label>
+            <select id="gender" name="gender">
+                <option value="" {% if not user_profile.gender %}selected{% endif %}>Select Gender</option>
+                <option value="M" {% if user_profile.gender == 'M' %}selected{% endif %}>Male</option>
+                <option value="F" {% if user_profile.gender == 'F' %}selected{% endif %}>Female</option>
+                <option value="O" {% if user_profile.gender == 'O' %}selected{% endif %}>Other</option>
+            </select>
+        </div>
+        <div>
+            <label for="bio">Bio:</label>
+            <textarea id="bio" name="bio" rows="4">{{ user_profile.bio }}</textarea>
+        </div>
+        <div>
+            <label for="profile_picture">Profile Picture:</label>
+            {% if user_profile.profile_picture %}
+                <img src="{{ user_profile.profile_picture.url }}" alt="Profile Picture" style="max-height: 100px;">
+            {% endif %}
+            <input type="file" id="profile_picture" name="profile_picture">
+        </div>
+        <button type="submit">Save Changes</button>
+    </form>
+</body>
+</html>

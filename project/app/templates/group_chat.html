@@ -1,0 +1,195 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ group.title }} - Chat</title>
+    <style>
+        /* General Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        /* Body Styling with Background Image */
+        body {
+            background: url("{% static 'image/pp.jpg' %}") no-repeat center center fixed;
+            background-size: cover; /* Ensures the image covers the entire viewport */
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        /* Title Styling */
+        h1 {
+            font-size: 2rem;
+            color: white; /* Adjusted for contrast against the background */
+            text-align: center;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); /* Improves readability */
+        }
+
+        /* Group Description */
+        div p {
+            font-size: 1.1rem;
+            color: white; /* Adjusted for contrast */
+            margin-bottom: 30px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Messages Section */
+        h2 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: white; /* Adjusted for readability */
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Message List */
+        ul {
+            list-style-type: none;
+            padding-left: 0;
+            margin-bottom: 30px;
+            max-width: 600px;
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.9); /* Transparent white background */
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 15px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        li {
+            padding: 8px 0;
+            border-bottom: 1px solid #ddd;
+        }
+
+        li:last-child {
+            border-bottom: none;
+        }
+
+        strong {
+            font-weight: bold;
+            color: #FF0000;
+        }
+
+        em {
+            font-size: 0.9rem;
+            color: #888;
+            margin-left: 10px;
+        }
+
+        /* Form Styling */
+        form {
+            width: 100%;
+            max-width: 600px;
+            margin-top: 20px;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 12px;
+            font-size: 1rem;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            outline: none;
+            resize: none;
+            transition: border-color 0.3s;
+        }
+
+        textarea:focus {
+            border-color: #FF0000;
+        }
+
+        /* Button Styling */
+        button {
+            padding: 12px 20px;
+            font-size: 1rem;
+            font-weight: bold;
+            color: #fff;
+            background-color: #FF0000;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        button:hover {
+            background-color: #e60000;
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        /* Back Link */
+        a {
+            text-decoration: none;
+            color: white; /* Adjusted for readability */
+            font-size: 1rem;
+            font-weight: bold;
+            margin-top: 20px;
+            display: inline-block;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+            transition: color 0.3s;
+        }
+
+        a:hover {
+            color: #FF0000;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            textarea {
+                font-size: 0.9rem;
+                padding: 10px;
+            }
+
+            button {
+                padding: 10px 15px;
+                font-size: 0.9rem;
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <h1>Chat for {{ group.title }}</h1>
+    <div>
+        <p>{{ group.description }}</p>
+    </div>
+    <div>
+        <h2>Messages</h2>
+        <ul>
+            {% for message in messages %}
+                <li>
+                    <strong>{{ message.sender.username }}</strong>: {{ message.content }}
+                    <em>{{ message.timestamp }}</em>
+                </li>
+            {% endfor %}
+        </ul>
+        <form method="post">
+            {% csrf_token %}
+            <textarea name="message_content" rows="4" cols="50" placeholder="Type your message here..."></textarea>
+            <br>
+            <button type="submit">Send</button>
+        </form>
+        <a href="{% url 'group_view' group_id=group.id %}">Back to Group</a>
+    </div>
+</body>
+</html>

@@ -1,0 +1,289 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Group View</title>
+    <style>
+        /* General Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        /* Body Styling with Background Image */
+        body {
+            background-image: url("{% static 'image/pra3.jpg' %}"); /* Replace with your image path */
+            background-size: cover; /* Ensures the image covers the entire screen */
+            background-position: center; /* Centers the image */
+            background-attachment: fixed; /* Keeps the image fixed during scroll */
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        /* Navigation Bar */
+        nav {
+            background-color: gray; /* Semi-transparent red background */
+            width: 100%;
+            padding: 10px 0;
+            margin-bottom: 10px;
+            border-radius: 8px;
+        }
+
+        nav ul {
+            list-style-type: none;
+            padding: 0;
+            text-align: center;
+        }
+
+        nav ul li {
+            display: inline;
+            margin-right: 10px;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: #fff;
+            font-size: 1.1rem;
+            padding: 10px 15px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        nav ul li a:hover {
+            background-color: gray;
+        }
+
+        /* Group Details Header */
+        header {
+            text-align: center;
+            margin-bottom: 5px;
+            background-color: rgba(255, 255, 255, 0.9); /* Semi-transparent white for readability */
+            padding: 5px;
+            border-radius: 5px;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        header h1 {
+            font-size: 2rem;
+            color: #444;
+        }
+
+        header p {
+            font-size: 1.1rem;
+            color: #777;
+        }
+
+        /* Group Info Section */
+        section {
+            margin-bottom: 10px;
+            width: 100%;
+            max-width: 600px;
+            background-color: rgba(255, 255, 255, 0.9); /* Semi-transparent background */
+            padding: 5px;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        section h3 {
+            font-size: 1.2rem;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        section p {
+            font-size: 1rem;
+            color: #555;
+            margin-bottom: 15px;
+        }
+
+        /* Form Styling */
+        form {
+            margin-top: 10px;
+            padding: 10px;
+            background-color: rgba(255, 255, 255, 0.9);
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+
+        form input[type="text"],
+        form input[type="datetime-local"] {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 1rem;
+        }
+
+        form button {
+            margin-top: 15px;
+            padding: 10px 20px;
+            background-color: gray;
+            color: white;
+            font-size: 1rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        form button:hover {
+            background-color: gray;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        footer a {
+            text-decoration: none;
+            color: gray;
+            font-size: 1.1rem;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+
+        footer a:hover {
+            color:gray;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            body {
+                padding: 15px;
+            }
+
+            header h1 {
+                font-size: 1.6rem;
+            }
+
+            nav ul li {
+                display: block;
+                margin: 10px 0;
+            }
+
+            section h3 {
+                font-size: 1rem;
+            }
+
+            section p {
+                font-size: 0.9rem;
+            }
+
+            form {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav>
+        <ul>
+            <li><a href="{% url 'group_info' group.id %}">Group Information</a></li>
+            <li><a href="{% url 'group_members' group.id %}">Members</a></li>
+            {% if group.group_type == 'anonymous' %}
+                <li><a href="{% url 'wishlist_item_form' group.id %}">Submit Wishlist</a></li>
+            {% endif %}
+            {% if user == group.owner and group.group_type == 'anonymous' %}
+                
+            <li><a href="{% url 'submitted_wishlist_items' group_id=group.id %}">Submitted Item</a></li>
+            {% endif %}
+            {% if group.group_type != 'anonymous' and user == group.owner %}
+            <li><a href="{% url 'wishlist_item_form' group.id %}">Create Wishlist</a></li>
+            {% endif %}
+            {% if group.group_type == 'anonymous'   %}
+            {% if group.is_launched %}
+                <li><a href="{% url 'view_selected_item' group.id %}">View Selected Item</a></li>
+            {% endif %}
+        {% endif %}
+        {% if group.group_type != 'anonymous'   %}
+        <li><a href="{% url 'chats' group.id %}">Group Chat</a></li>
+        {% endif %}
+        </ul>
+    </nav>
+
+    <!-- Group Details -->
+    <header>
+        <h1>Group: {{ group.title }}</h1>
+        <p>Group Type: {{ group.get_group_type_display }}</p>
+    </header>
+    {% if group.group_type == 'anonymous' and user != group.owner  %}
+    <section>
+        <h3>Budget Limit:</h3>
+        <p>{% if group.budget_limit %}{{ group.budget_limit}}{% else %}Unlimited{% endif %}</p>
+
+        <h3>Submission Deadline:</h3>
+        <p>{% if group.submission_deadline %}
+            {{ group.submission_deadline|date:"F j, Y, g:i a" }}
+        {% else %}
+            Not set
+        {% endif %}</p>
+    </section>
+    {% endif %}
+    <!-- Surprise Gift Group (Chat Section) -->
+  
+
+    <!-- Owner Settings for Both Group Types -->
+    {% if user == group.owner and group.group_type == 'anonymous' %}
+        <section>
+            <h2>Owner Settings</h2>
+
+            <!-- Budget Limit Settings -->
+            {% if not group.budget_limit %}
+                <h3>Set Budget Limit</h3>
+                <form method="POST">
+                    {% csrf_token %}
+                    <label for="budget_limit">Budget Limit:</label>
+                    <input type="text" name="budget_limit" id="budget_limit" placeholder="Enter 'unlimited' or a number">
+                    <button type="submit">Save Budget</button>
+                </form>
+            {% else %}
+                <p>Budget Limit: {{ group.budget_limit }}</p>
+            {% endif %}
+
+            <!-- Submission Deadline Settings -->
+            {% if not group.submission_deadline %}
+                <h3>Set Submission Deadline</h3>
+                <form method="POST">
+                    {% csrf_token %}
+                    <label for="submission_deadline">Deadline:</label>
+                    <input type="datetime-local" name="submission_deadline" id="submission_deadline" value="{{ group.submission_deadline|date:'Y-m-d\TH:i' }}">
+                    <button type="submit">Save Deadline</button>
+                </form>
+            {% else %}
+                <p>Submission Deadline: {{ group.submission_deadline|date:"F j, Y, g:i a" }}</p>
+            {% endif %}
+        </section>
+    {% endif %}
+
+    {% if user == group.owner and group.group_type == 'anonymous' %}
+    {% if group.is_launched %}
+        <p>The wishlist has been launched successfully.</p>
+    {% elif wishlist_items_count == group_members_count  %}
+        <form method="POST" action="{% url 'launch_wishlist' group.id %}">
+            {% csrf_token %}
+            <button type="submit">Launch Wishlist</button>
+        </form>
+    {% else %}
+        <p>Waiting for all members to submit their wishlist items.</p>
+    {% endif %}
+{% endif %}
+
+    <!-- Back to Dashboard -->
+    <footer>
+        <a href="{% url 'dashboard' %}">Back to Dashboard</a>
+    </footer>
+</body>
+</html>

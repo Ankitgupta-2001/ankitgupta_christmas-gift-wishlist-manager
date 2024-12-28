@@ -1,0 +1,167 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <style>
+        /* General Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+    
+        /* Body Styling with Background Image */
+        body {
+            background: url("{% static 'image/img.jpg' %}") no-repeat center center fixed;
+            background-size: cover; /* Makes the image cover the entire viewport */
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+    
+        /* Navbar Styling */
+        .navbar {
+            width: 100%;
+            background-color: #1a0000; /* Semi-transparent red */
+            color: white;
+            padding: 10px 20px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        }
+    
+        .navbar h1 {
+            color: white;
+            font-size: 1.8rem;
+        }
+    
+        .navbar .search-bar {
+            display: flex;
+            align-items: center;
+        }
+    
+        .navbar input[type="text"] {
+            padding: 8px 12px;
+            font-size: 1rem;
+            border: none;
+            border-radius: 4px;
+            outline: none;
+            width: 250px;
+            margin-right: 10px;
+        }
+    
+        .navbar button {
+            padding: 8px 15px;
+            font-size: 1rem;
+            border: none;
+            border-radius: 4px;
+            background-color: white;
+            color: gray;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+    
+        .navbar button:hover {
+            background-color: #ffcccc;
+        }
+    
+        /* Heading Styling */
+        h1.page-title {
+            font-size: 2.5rem;
+            margin: 40px 0 20px;
+            color: white; /* Text color stands out on the image */
+            text-align: center;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); /* Adds a shadow for better readability */
+        }
+    
+        /* Navigation Links Section */
+        .nav-links {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            max-width: 800px;
+            margin: 20px 0;
+        }
+    
+        /* Link Buttons Styling */
+        .nav-links a {
+            text-decoration: none;
+            color: white;
+            font-weight: bold;
+            padding: 12px 25px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            text-align: center;
+            font-size: 1.1rem;
+        }
+    
+        /* Unique Colors for Each Link */
+        .nav-links a:nth-child(1) {
+            background-color: #4caf50; /* Green for Create a Group */
+        }
+    
+        .nav-links a:nth-child(2) {
+            background-color: #2196f3; /* Blue for Join a Group */
+        }
+    
+        .nav-links a:nth-child(3) {
+            background-color: #ff9800; /* Orange for View Created Groups */
+        }
+    
+        .nav-links a:nth-child(4) {
+            background-color: #9c27b0; /* Purple for View Joined Groups */
+        }
+    
+        .nav-links a:nth-child(5) {
+            background-color: #607d8b; /* Gray for Profile */
+        }
+    
+        .nav-links a:nth-child(6) {
+            background-color: #f44336; /* Red for Logout */
+        }
+    
+        /* Hover Effects */
+        .nav-links a:hover,
+        .nav-links a:focus {
+            transform: scale(1.1);
+            filter: brightness(1.2);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <div class="navbar">
+        <h1>Dashboard</h1>
+        <div class="search-bar">
+            <input type="text" placeholder="Search...">
+            <button>Search</button>
+        </div>
+    </div>
+
+    <!-- Page Title -->
+    <h1 class="page-title">Welcome, {{ user.username }}</h1>
+
+    <!-- Navigation Links -->
+    <div class="nav-links">
+        <a href="{% url 'create_group' %}">Create a Group</a>
+        <a href="{% url 'join_group' %}">Join a Group</a>
+        <a href="{% url 'created_groups' %}">View Created Groups</a>
+        <a href="{% url 'joined_groups' %}">View Joined Groups</a>
+        <a href="{% url 'profile' %}">Profile</a>
+        <a href="{% url 'logout' %}">Logout</a>
+    </div>
+</body>
+</html>

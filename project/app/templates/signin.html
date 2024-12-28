@@ -1,0 +1,138 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In</title>
+    <style>
+        /* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+/* Body Styling */
+body {
+    background-color: #f4f4f9;
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    padding: 20px;
+}
+
+/* Heading */
+h1 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+    color: #444;
+}
+
+/* Error Message */
+p[style="color: red;"] {
+    margin-bottom: 15px;
+    font-size: 0.9rem;
+    background-color: #ffe6e6;
+    padding: 10px;
+    border: 1px solid #ff4d4d;
+    border-radius: 5px;
+}
+
+/* Form Styling */
+form {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Labels */
+label {
+    font-size: 1rem;
+    margin-bottom: 5px;
+    color: #555;
+}
+
+/* Input Fields */
+input[type="email"],
+input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+input[type="email"]:focus,
+input[type="password"]:focus {
+    border-color: #008000;
+}
+
+/* Submit Button */
+button {
+    padding: 10px 15px;
+    font-size: 1rem;
+    font-weight: bold;
+    color: #fff;
+    background-color: rgb(255, 0, 0);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: rgb(255, 0, 0);
+}
+
+/* Signup Link */
+p {
+    margin-top: 15px;
+    font-size: 0.9rem;
+    text-align: center;
+    color: #555;
+}
+
+a {
+    text-decoration: none;
+    color:  #008000;
+    font-weight: bold;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+    </style>
+</head>
+<body>
+    <h1>Sign In</h1>
+    <!-- Display error message -->
+    {% if error %}
+        <p style="color: red;">{{ error }}</p>
+    {% endif %}
+    <form method="POST">
+        {% csrf_token %}
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required>
+        
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required>
+        
+        <button type="submit">Sign In</button>
+    </form>
+    <p>Don't have an account? <a href="{% url 'signup' %}">Sign Up</a></p>
+</body>
+</html>

@@ -1,0 +1,171 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Profile</title>
+    <style>
+        /* General Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        /* Body Styling with Background Image */
+        body {
+            background-image: url("{% static 'image/pp2.jpg' %}"); /* Update with your image path */
+            background-size: cover;
+            background-position: center;
+            color: #333;
+            font-size: 1rem;
+            padding: 20px;
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+        /* Form Container */
+        form {
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 500px;
+            margin: 20px auto;
+        }
+
+        /* Form Heading */
+        h1 {
+            text-align: center;
+            color: #333;
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+        /* Input Fields and Labels */
+        label {
+            font-size: 1rem;
+            margin-bottom: 8px;
+            display: block;
+            color: #555;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="file"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+            color: #333;
+            background-color: #f7f7f7;
+        }
+
+        input[type="file"] {
+            padding: 5px;
+        }
+
+        /* Submit Button */
+        button[type="submit"] {
+            background-color: #FF0000;
+            color: white;
+            font-size: 1.1rem;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            max-width: 200px;
+            margin: 10px 0;
+            transition: background-color 0.3s ease;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        button[type="submit"]:hover {
+            background-color: #CC0000;
+        }
+
+        /* Back Link */
+        a {
+            color: #FF0000;
+            font-size: 1rem;
+            text-decoration: none;
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        /* Error Message */
+        .error-message {
+            color: #FF0000;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            button[type="submit"] {
+                font-size: 1rem;
+                padding: 8px 12px;
+            }
+
+            input[type="text"],
+            input[type="email"],
+            input[type="file"],
+            textarea {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        
+        <!-- Form Heading -->
+        <h1>Update Profile</h1>
+
+        <!-- Error Messages -->
+        {% if form.errors %}
+        <div class="error-message">
+            <p>Please correct the errors below and try again.</p>
+        </div>
+        {% endif %}
+
+        <!-- Dynamic Form Rendering -->
+        {% for field in form %}
+        <div>
+            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+            {{ field }}
+            {% if field.errors %}
+            <span class="error-message">{{ field.errors|join:", " }}</span>
+            {% endif %}
+        </div>
+        {% endfor %}
+
+        <!-- Submit Button -->
+        <button type="submit">Save Changes</button>
+    </form>
+
+    <!-- Back Link -->
+    <a href="{% url 'profile' %}">Go Back to Profile</a>
+</body>
+</html>

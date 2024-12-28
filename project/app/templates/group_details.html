@@ -1,0 +1,96 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Group Details</title>
+    <style>
+        /* General Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        /* Body Styling */
+        body {
+            background-image: url("{% static 'image/g5.avif' %}"); /* Path to your background image */
+            background-size: cover; /* Ensure the image covers the entire background */
+            background-position: center; /* Center the background image */
+            background-repeat: no-repeat; /* Prevent the image from repeating */
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        /* Title Styling */
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: #4d2600 /* White text for better contrast */
+        }
+
+        /* Group Details */
+        p {
+            font-size: 1.1rem;
+            color: #4d2600; /* Light gray text for readability */
+            margin-bottom: 15px;
+        }
+
+        /* Label Styling for each detail */
+        p strong {
+            font-weight: bold;
+            color: #4d2600; /* Gold color for labels */
+        }
+
+        /* Back Link Styling */
+        a {
+            text-decoration: none;
+            color: #4d2600;
+            font-size: 1rem;
+            font-weight: bold;
+            margin-top: 20px;
+            display: inline-block;
+            transition: color 0.3s;
+        }
+
+        a:hover {
+            color: #4d2600; /* Orange color on hover */
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            p {
+                font-size: 1rem;
+            }
+
+            a {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Group Details</h1>
+    <p>Title: {{ group.title }}</p>
+    <p>Description: {{ group.description }}</p>
+    <p>Group Type: {{ group.get_group_type_display }}</p>
+    <p>Group Code: {{ group.code }}</p>
+    <p>Created At: {{ group.created_at }}</p>
+    <a href="{% url 'dashboard' %}">Back to Dashboard</a>
+</body>
+</html>

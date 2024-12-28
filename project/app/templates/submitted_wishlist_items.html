@@ -1,0 +1,202 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submitted Wishlist Items</title>
+    <style>
+        /* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+/* Body Styling */
+body {
+    background-color: #f9f9f9;
+    color: #333;
+    font-size: 1rem;
+    padding: 20px;
+}
+
+/* Main Container */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Heading */
+h1 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+/* Wishlist Items */
+ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+li {
+    background-color: #fff;
+    padding: 20px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+li p {
+    font-size: 1rem;
+    color: #555;
+    margin-bottom: 10px;
+}
+
+li p:first-child {
+    font-weight: bold;
+}
+
+li button {
+    background-color: #FF0000;
+    color: white;
+    font-size: 1rem;
+    padding: 8px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-right: 10px;
+    transition: background-color 0.3s;
+}
+
+li button:hover {
+    background-color: #FF0000;
+}
+
+li button.reject {
+    background-color: #FF0000;
+}
+
+li button.reject:hover {
+    background-color: #c82333;
+}
+
+/* No Items Message */
+p.no-items {
+    text-align: center;
+    font-size: 1.2rem;
+    color: #888;
+    margin-top: 20px;
+}
+
+/* Back Link */
+a {
+    display: block;
+    text-align: center;
+    margin-top: 20px;
+    font-size: 1rem;
+    color: #007BFF;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* WebSocket Notification */
+.alert {
+    padding: 10px;
+    margin-top: 20px;
+    background-color: #f8d7da;
+    color: #721c24;
+    border-radius: 5px;
+    border: 1px solid #f5c6cb;
+    font-size: 1rem;
+    text-align: center;
+}
+
+.alert.success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.alert.info {
+    background-color: #d1ecf1;
+    color: #0c5460;
+    border: 1px solid #bee5eb;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    h1 {
+        font-size: 1.5rem;
+    }
+
+    li {
+        padding: 15px;
+    }
+
+    li p {
+        font-size: 0.9rem;
+    }
+
+    li button {
+        font-size: 0.9rem;
+        padding: 6px 12px;
+    }
+
+    a {
+        font-size: 0.9rem;
+    }
+}
+
+    </style>
+</head>
+<body>
+    <h1>Submitted Wishlist Items for Group: {{ group.title }}</h1>
+
+{% if wishlist_items %}
+    <ul>
+        {% for item in wishlist_items %}
+            <li>
+                <p> {{ item.name }} - {{ item.description }} - ${{ item.price }}</p>
+                <p>Status: {{ item.get_is_approved_display }}</p>
+
+                {% if item.is_approved == 'pending' %}
+                    <form method="POST" action="{% url 'approve_wishlist_item' item.id %}">
+                        {% csrf_token %}
+                        <button type="submit">Approve</button>
+                    </form>
+
+                    <form method="POST" action="{% url 'reject_wishlist_item' item.id %}">
+                        {% csrf_token %}
+                        <button type="submit">Reject</button>
+                    </form>
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>No wishlist items submitted yet.</p>
+{% endif %}
+
+<a href="{% url 'group_view' group.id %}">Back</a>
+<script>
+    const userId = "{{ request.user.id }}"; // Get the logged-in user's ID
+    const socket = new WebSocket(`ws://${window.location.host}/ws/notifications/`);
+
+    socket.onmessage = function(event) {
+        const data = JSON.parse(event.data);
+        alert(data.message); // Show the notification in an alert (customize as needed)
+    };
+
+    socket.onclose = function() {
+        console.log("WebSocket closed.");
+    };
+</script>
+
+</body>
+</html>

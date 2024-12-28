@@ -1,0 +1,83 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Selected Item</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: #333;
+        }
+        .item-info {
+            background-color: #fafafa;
+            padding: 15px;
+            border-radius: 6px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        }
+        .item-info p {
+            font-size: 1rem;
+            margin: 10px 0;
+        }
+        .item-info p strong {
+            font-weight: bold;
+        }
+        .no-selection {
+            padding: 20px;
+            text-align: center;
+            font-size: 1.2rem;
+            color: #f44336;
+        }
+        .back-link {
+            text-decoration: none;
+            color: #FF0000;
+            font-size: 1rem;
+            margin-top: 20px;
+            display: block;
+            text-align: center;
+        }
+        .back-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Selected Item for Group: {{ group.title }}</h1>
+
+    {% if selected_item %}
+        <div class="item-info">
+            <p><strong>Item Name:</strong> {{ selected_item.name }}</p>
+            <p><strong>Description:</strong> {{ selected_item.description }}</p>
+            <p><strong>Price:</strong> ${{ selected_item.price }}</p>
+            <p><strong>Selected On:</strong> {{ selected_item.wishlist_item.selected_at|date:"F j, Y, g:i a" }}</p>
+        </div>
+    {% else %}
+        <div class="no-selection">
+            <p>You have not selected an item yet. Please choose an item from your wishlist.</p>
+        </div>
+    {% endif %}
+
+    <a href="{% url 'group_view' group_id=group.id %}">Back to Group</a>
+</div>
+
+</body>
+</html>

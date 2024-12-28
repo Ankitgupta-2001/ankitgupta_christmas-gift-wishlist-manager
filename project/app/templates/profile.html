@@ -1,0 +1,137 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-image: url("{% static 'image/pkk.webp' %}"); /* Path to the background image */
+            background-size: cover; /* Ensure the background covers the whole page */
+            background-position: center; /* Center the background */
+            background-attachment: fixed; /* Ensure background stays fixed when scrolling */
+            margin: 0;
+            padding: 0;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.9); /* Semi-transparent white background for the container */
+            border-radius: 10px; /* Optional: adds rounded corners */
+        }
+
+        .profile-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .profile-header img  {
+            border-radius: 50%;
+            width: 120px;
+            height: 120px;
+            margin-right: 20px;
+        }
+
+        .profile-header .profile-info {
+            flex: 1;
+        }
+
+        .profile-header h1 {
+            margin: 0;
+            font-size: 30px;
+        }
+
+        .profile-header p {
+            margin: 5px 0;
+            font-size: 16px;
+        }
+
+        .profile-stats {
+            display: flex;
+            justify-content: space-around;
+            border-top: 1px solid #ddd;
+            padding-top: 10px;
+            margin-top: 20px;
+        }
+
+        .profile-stats div {
+            text-align: center;
+        }
+
+        .profile-stats strong {
+            font-size: 20px;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .profile-stats p {
+            font-size: 14px;
+            color: #888;
+        }
+
+        .profile-actions {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .profile-actions a {
+            padding: 10px 20px;
+            background-color: #FF0000;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 5px;
+            font-size: 16px;
+        }
+
+        .profile-actions a:hover {
+            background-color: #FF0000;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- Profile Header Section -->
+    <div class="profile-header">
+        {% if user_profile.profile_picture %}
+            <img src="{{ user_profile.profile_picture.url }}" alt="Profile Picture">
+        {% else %}
+            <img src="prabhu.png" alt="Profile Picture"> <!-- Placeholder Image -->
+        {% endif %}
+        <div class="profile-info">
+            <h1>{{ user_profile.full_name }}</h1>
+        </div>
+    </div>
+
+    <!-- Profile Stats Section -->
+    <div class="profile-stats">
+        <div>
+            <strong>{{ followers_count }}</strong>
+            <p>Followers</p>
+        </div>
+        <div>
+            <strong>{{ following_count }}</strong>
+            <p>Following</p>
+        </div>
+        <div>
+            <strong>{{ total_contributions }}</strong>
+            <p>Total Contributions</p>
+        </div>
+    </div>
+    <p><strong>Bio:</strong> {{ user_profile.bio }}</p>
+
+    <!-- Profile Actions Section -->
+    <div class="profile-actions">
+        <a href="{% url 'edit_profile' %}">Edit Profile</a>
+        <a href="{% url 'dashboard' %}">Back to Dashboard</a>
+    </div>
+</div>
+
+</body>
+</html>

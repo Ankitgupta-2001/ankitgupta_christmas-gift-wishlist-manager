@@ -1,0 +1,164 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Joined Groups</title>
+    <style>
+        /* General Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        /* Body Styling with Background Image */
+        body {
+            background-image: url("{% static 'image/pra.jpg' %}"); /* Replace 'images/wk.jpg' with your actual image path */
+            background-size: cover; /* Cover the entire screen with the image */
+            background-position: center; /* Center the image */
+            background-attachment: fixed; /* Make the image fixed when scrolling */
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        /* Heading */
+        h1 {
+            font-size: 2rem;
+            color: #444;
+            margin-bottom: 20px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5); /* Add shadow for better visibility on light backgrounds */
+        }
+
+        /* Navigation */
+        nav {
+            width: 100%;
+            margin-bottom: 5px;
+            display: flex;
+            justify-content: space-between;
+            max-width: 500px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color:#330000;
+            font-size: 1rem;
+            font-weight: bold;
+        }
+
+        nav a:hover {
+            text-decoration: underline;
+        }
+
+        /* Section Styling */
+        section {
+            width: 40%;
+            max-width: 800px;
+            background-color: rgba(255, 255, 255, 0.9); /* Semi-transparent white background for readability */
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        /* List of Joined Groups */
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        li:last-child {
+            border-bottom: none;
+        }
+
+        span {
+            font-size: 1.1rem;
+            color: gray;
+        }
+
+        button {
+            background-color: skyblue;
+            color: white;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #FF0000;
+        }
+
+        /* Message when no groups joined */
+        p {
+            font-size: 1rem;
+            color: #555;
+            margin-top: 20px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            body {
+                padding: 15px;
+            }
+
+            h1 {
+                font-size: 1.6rem;
+            }
+
+            nav {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            nav a {
+                margin-bottom: 10px;
+            }
+
+            section {
+                width: 100%;
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <h1>Groups You've Joined</h1>
+
+    <nav>
+        <a href="{% url 'dashboard' %}">Back to Dashboard</a>
+        <a href="{% url 'logout' %}">Logout</a>
+    </nav>
+
+    <section>
+        {% if joined_groups %}
+            <ul>
+                {% for group in joined_groups %}
+                    <li>
+                        <span>{{ group.title }}</span>
+                        <a href="{% url 'group_view' group.id %}"><button>Open</button></a>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>You haven't joined any groups yet. <a href="{% url 'join_group' %}">Join one now</a>.</p>
+        {% endif %}
+    </section>
+</body>
+</html>
